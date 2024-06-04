@@ -44,6 +44,19 @@ c)  For all of the following tasks in this exercise sheet we ask you to
 
 d)  Name 2 strengths and 2 weaknesses of git. (Don't forget to create a
     commit after this answer, see *1c*)
+    
+Strengths:
+1. Distributed Version Control:** 
+   - Fast operations and offline work with full repository copies.
+2. Branching and Merging:
+   - Flexible, lightweight branching supports efficient workflows and easy integration.
+
+Weaknesses:
+1. Complexity for New Users:
+   - Steep learning curve with many commands and concepts.
+2. Performance with Large Repositories:
+   - Slows down with very large repositories and numerous files.
+    
 e)  Knit this exercise sheet. Some new files will automatically be
     generated when knitting the sheet e.g. the HTML page. Ignore these
     files, as we only want to track the source files themselves.
@@ -56,6 +69,8 @@ a)  Create a new repository on GitHub in your account named
     `exeRcise-sheet-3`. Make sure you create a **public repository** so
     we are able to see it for grading. Add the link to the repository
     below:
+    https://github.com/Aiman-CS/exeRcise-sheet-3.git
+    
 b)  Push your code to this new repository by copying and executing the
     snippet on github listed under
     `…or push an existing repository from the command line`.
