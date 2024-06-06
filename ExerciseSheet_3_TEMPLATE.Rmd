@@ -94,24 +94,81 @@ b)  Load the data for both years into R. Check the type of the count
     some of the counts are inaccurate because of this. Explain your
     solution and the repercussions.
 ```{r}
-"data/open_data_portal_2022.csv"
-"data/vornamen-muenchen-2023.csv"
+
+library(dplyr)
+
+data_2022 <- read.csv("data/open_data_portal_2022.csv", stringsAsFactors = FALSE)
+data_2023 <- read.csv("data/vornamen-muenchen-2023.csv", stringsAsFactors = FALSE)
+
+str(data_2022$Anzahl)
+str(data_2023$Anzahl)
+
+data_2022$Anzahl <- as.numeric(gsub(",", "", data_2022$Anzahl))
+data_2023$Anzahl <- as.numeric(gsub(",", "", data_2023$Anzahl))
+
+summary(data_2022$Anzahl)
+summary(data_2023$Anzahl)
 
 ```
-    
+    Explanation:
+The str function checks the structure of the "Anzahl" column to identify why it might not be numeric.
+The gsub function is used to remove any commas from the "Anzahl" values, which could prevent them from being recognized as numeric.
+The as.numeric function converts the "Anzahl" column to numeric, forcing any non-numeric values to NA.
     
 
 c)  Calculate the total number of babies born in Munich in 2022
     and 2023. Which year had the bigger baby-boom?
+    
+```{r}
+total_2022 <- sum(data_2022$Anzahl, na.rm = TRUE)
+total_2023 <- sum(data_2023$Anzahl, na.rm = TRUE)
+
+print(paste("Total number of babies born in 2022:", total_2022))
+print(paste("Total number of babies born in 2023:", total_2023))
+
+```
+  The year with the bigger baby boom is 2022
+    
 
 d)  Add a new column `year` to both datasets which holds the correct
     year for each.
+    
+```{r}
+data_2022 <- mutate(data_2022, year = 2022)
+data_2023 <- mutate(data_2023, year = 2023)
+
+head(data_2022)
+head(data_2023)
+
+```
+    
 
 e)  Combine both datasets into one using `bind_rows()`.
+
+```{r}
+combined_data <- bind_rows(data_2022, data_2023)
+
+head(combined_data)
+
+```
+
 
 f)  Combine the counts for same names to determine the most popular
     names across both years. Print out the top 10 names in a nicely
     formatted table for both years. Include a table caption.
+    
+```{r}
+combined_counts <- combined_data %>%
+  group_by(Vorname, Geschlecht) %>%
+  summarize(total_count = sum(Anzahl, na.rm = TRUE)) %>%
+  arrange(desc(total_count))
+
+top_10_names <- head(combined_counts, 10)
+
+print(top_10_names)
+
+```
+    
 
 ## Exercise 4: Open Analysis (4 points)
 
@@ -122,11 +179,14 @@ determining the research question yourself.
 a)  Go to <https://github.com/owid/owid-datasets/tree/master/datasets>
     and choose a dataset that interests you. You can have a look at
     <https://ourworldindata.org/> to gather some inspiration.
+  
 b)  Download the dataset and track it in git.
+
+
 c)  Put the name / title of the dataset and a link to it below.
 
--   Dataset Name: ...
--   Link: <https://github.com/owid/owid-datasets/>...
+-   Dataset Name: Prevalence of undernourishment - World Bank (2017) & UN SOFI (2018)
+-   Link: https://github.com/owid/owid-datasets/tree/master/datasets/Prevalence%20of%20undernourishment%20-%20World%20Bank%20(2017)%20%26%20UN%20SOFI%20(2018)
 
 d)  Come up with a (research) question you want to answer with the data
     and briefly explain why you believe this is an interesting question
