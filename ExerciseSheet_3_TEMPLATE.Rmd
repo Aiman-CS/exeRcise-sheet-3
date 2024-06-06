@@ -192,10 +192,55 @@ d)  Come up with a (research) question you want to answer with the data
     and briefly explain why you believe this is an interesting question
     within one sentence. It should be a question that can be answered
     with the dataset and using R.
+    
+Question: How has the prevalence of undernourishment changed globally from 1991 to 2015, and are there any significant trends or patterns observable over this period?
+
+Explanation: Understanding the global trend in undernourishment over time is crucial for evaluating the effectiveness of international efforts to combat hunger and for identifying regions that may require more attention.
+
+    
 e)  Use R to answer your chosen question.
+```{r}
+library(dplyr)
+library(ggplot2)
+
+data <- read.csv("data/Prevalence_of_undernourishment_World_Bank_(2017)&UN_SOFI_(2018).csv")
+
+colnames(data) <- c("Entity", "Year", "Undernourishment")
+
+global_trend <- data %>%
+  group_by(Year) %>%
+  summarize(Global_Undernourishment = mean(Undernourishment, na.rm = TRUE))
+
+print(global_trend)
+
+
+
+
+
+```
+The trend indicates a general decrease in undernourishment over the years, which is a positive development. The following assignment f) will clearly illustrate this result.
+
+
 f)  Create a meaningful plot / figure with the dataset. Make sure to
     provide a figure caption (via the chunk options / Rmarkdown) and
     correctly label the figure.
+    
+```{r}
+ggplot(global_trend, aes(x = Year, y = Global_Undernourishment)) +
+  geom_line(color = "blue") +
+  geom_point(color = "red") +
+  labs(title = "Global Trend in Prevalence of Undernourishment (1991-2015)",
+       x = "Year",
+       y = "Prevalence of Undernourishment (%)") +
+  theme_minimal()
+
+ggsave("global_undernourishment_trend.png")
+
+```
+    
+Why the abrupt change in 2015/2016?
+The abrupt change in the data between 2015 and 2016 is due to missing information on the prevalence of undernourishment in many countries for the year 2016.
+
 
 ## Final Note
 
